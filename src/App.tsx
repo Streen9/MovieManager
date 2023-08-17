@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useReducer } from "react"
+import Container from "./components/Container";
+import MainPage from "./pages/MainPage";
+import { initialState } from "./state/initialState";
+import reducer from "./state/reducer";
+import StateContext from "./state/StateContext";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
+  const [state,dispatch] = useReducer(reducer,initialState);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <StateContext.Provider value={{state,dispatch}}>
+        <Container>
+          <Routes>
+            <Route path="/" element={<MainPage/>}/>
+            <Route path="admin" element={<AdminPage/>}/>
+          </Routes>
+        </Container>
+      </StateContext.Provider>
+    </BrowserRouter>
   );
 }
 
